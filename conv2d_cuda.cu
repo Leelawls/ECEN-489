@@ -57,7 +57,7 @@ void conv2d_cuda(
         in_channels, out_channels, height, width, kernel_size, stride, padding
     );
 
-    cudaDeviceSynchronize();
+    cudaStreamSynchronize(0)
 }
 
 // PyTorch Extension Module

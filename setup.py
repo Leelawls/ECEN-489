@@ -7,8 +7,15 @@ setup(
         CUDAExtension(
             "conv2d_cuda",
             ["conv2d_cuda.cu"],
+            extra_compile_args={
+                "cxx": ["-O2"],
+                "nvcc": [
+                    "-O2",
+                    "--gpu-architecture=compute_75",  # Use compute_75 for CUDA 10.2
+                    "--gpu-code=sm_75"
+                ],
+            },
         )
     ],
     cmdclass={"build_ext": BuildExtension}
 )
-#python setup.py install

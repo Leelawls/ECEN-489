@@ -36,7 +36,7 @@ class CNN(nn.Module):
         self.conv2 = nn.Conv2d(32, 64, kernel_size=3, stride=1, padding=1)
         self.bn2 = nn.BatchNorm2d(64)
 
-        self.conv3 = nn.Conv2d(64, 128, kernel_size=3, stride=1, padding=1)  # Extra Conv Layer for better feature extraction
+        self.conv3 = nn.Conv2d(64, 128, kernel_size=3, stride=1, padding=1) 
         self.bn3 = nn.BatchNorm2d(128)
 
         self.dropout = nn.Dropout(0.3)  # Dropout for Regularization

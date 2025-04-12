@@ -11,8 +11,8 @@ setup(
                 "cxx": ["-O2"],
                 "nvcc": [
                     "-O2",
-                    "--gpu-architecture=compute_75",  # Use compute_75 for CUDA 10.2
-                    "--gpu-code=sm_75"
+                    "--gpu-architecture=compute_86",  # Use compute_75 for CUDA 10.2
+                    "--gpu-code=sm_86"
                 ],
             },
         )

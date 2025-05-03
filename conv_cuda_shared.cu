@@ -8,7 +8,7 @@
 #include "stb_image_write.h"
 
 #define TILE_WIDTH 16
-#define MAX_KERNEL_SIZE 7  
+#define MAX_KERNEL_SIZE 7  // Support up to 7x7 kernel
 
 __global__ void conv2d_shared(
     const float* input, const float* kernel, float* output,
@@ -77,6 +77,8 @@ int main() {
     dim3 dimBlock(TILE_WIDTH + kernel_size - 1, TILE_WIDTH + kernel_size - 1);
     dim3 dimGrid((width + TILE_WIDTH - 1) / TILE_WIDTH, (height + TILE_WIDTH - 1) / TILE_WIDTH);
 
+    conv2d_shared<<<dimGrid, dimBlock>>>(d_input, d_kernel, d_output, height, width, kernel_size);
+    cudaDeviceSynchronize();
     // --- CUDA Timing Start ---
     cudaEvent_t start, stop;
     cudaEventCreate(&start);
@@ -104,6 +106,7 @@ int main() {
 
     stbi_write_png("output.png", width, height, 1, result_img, width);
 
+    // Cleanup
     cudaFree(d_input);
     cudaFree(d_output);
     cudaFree(d_kernel);
@@ -114,3 +117,4 @@ int main() {
 
     return 0;
 }
+

@@ -50,9 +50,9 @@ int main() {
 
     int kernel_size = 3;
     float h_kernel[] = {
-         -1, 0,  1,
-        -2,  0, 2,
-         -1, 0,  1
+         0, -1,  0,
+        -1,  5, -1,
+         0, -1,  0
     };
 
     float* d_input;
@@ -73,6 +73,8 @@ int main() {
     dim3 blockDim(BLOCK_SIZE, BLOCK_SIZE);
     dim3 gridDim((width + BLOCK_SIZE - 1) / BLOCK_SIZE, (height + BLOCK_SIZE - 1) / BLOCK_SIZE);
 
+    conv2d_kernel<<<gridDim, blockDim>>>(d_input, d_kernel, d_output, height, width, kernel_size);
+    cudaDeviceSynchronize();
 
     // Launch kernel with timing
     cudaEvent_t start, stop;
@@ -119,3 +121,4 @@ int main() {
 
     return 0;
 }
+

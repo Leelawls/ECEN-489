@@ -35,6 +35,9 @@ __global__ void fc_layer_shared(
 }
 
 int main() {
+    // -------------------------------
+    // Host allocations and init
+    // -------------------------------
     float h_input[INPUT_SIZE];
     float h_fc1_weight[HIDDEN_SIZE * INPUT_SIZE];
     float h_fc1_bias[HIDDEN_SIZE];
@@ -76,6 +79,9 @@ int main() {
     cudaMemcpy(d_fc2_weight, h_fc2_weight, OUTPUT_SIZE * HIDDEN_SIZE * sizeof(float), cudaMemcpyHostToDevice);
     cudaMemcpy(d_fc2_bias, h_fc2_bias, OUTPUT_SIZE * sizeof(float), cudaMemcpyHostToDevice);
 
+    // -------------------------------
+    // Timing
+    // -------------------------------
     cudaEvent_t start, stop;
     cudaEventCreate(&start);
     cudaEventCreate(&stop);
@@ -97,6 +103,10 @@ int main() {
     cudaEventSynchronize(stop);
     float elapsed_ms = 0;
     cudaEventElapsedTime(&elapsed_ms, start, stop);
+
+    // -------------------------------
+    // Copy and print result
+    // -------------------------------
     cudaMemcpy(h_output, d_output, OUTPUT_SIZE * sizeof(float), cudaMemcpyDeviceToHost);
 
     printf("Output logits (shared memory):\n");
@@ -105,7 +115,9 @@ int main() {
     }
     printf("\nForward pass time: %.3f ms\n", elapsed_ms);
 
-
+    // -------------------------------
+    // Cleanup
+    // -------------------------------
     cudaFree(d_input);
     cudaFree(d_fc1_weight);
     cudaFree(d_fc1_bias);
@@ -116,3 +128,4 @@ int main() {
 
     return 0;
 }
+

@@ -76,7 +76,9 @@ int main() {
     cudaEventCreate(&stop);
     cudaEventRecord(start);
 
+    // Layer 1: FC1 + ReLU
     fc_layer<<<1, HIDDEN_SIZE>>>(d_input, d_fc1_weight, d_fc1_bias, d_hidden, INPUT_SIZE, HIDDEN_SIZE, true);
+    // Layer 2: FC2 (no ReLU)
     fc_layer<<<1, OUTPUT_SIZE>>>(d_hidden, d_fc2_weight, d_fc2_bias, d_output, HIDDEN_SIZE, OUTPUT_SIZE, false);
 
     cudaEventRecord(stop);
@@ -107,3 +109,4 @@ int main() {
 
     return 0;
 }
+
